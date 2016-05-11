@@ -24,7 +24,8 @@ reserved = {
     'STRING' : 'string',
     'RETURN' : 'return',
     'TRUE'   : 'TRUE',
-    'FALSE'  : 'FALSE'
+    'FALSE'  : 'FALSE',
+
 }
 
 # List of token names.
@@ -34,7 +35,7 @@ tokens = [
           'LT_OP', 'GT_OP', 'PLUS', 'MINUS', 'MULT', 'DIV', 'PRCNT', 'BANG', \
           'COMMA', 'SQUOTE', 'LAMBDA', 'MAP_TO', 'ADD_1_AND_SUM', \
           #'DOT', \
-          'INTEGER', 'IDENTIFIER', 'CLFLOAT', 'CLSTRING' \
+          'INTEGER', 'IDENTIFIER', 'CLFLOAT', 'CLSTRING','FUNCTION_CALL' \
           ] + list(reserved.keys())
 
 # Regular expression rules for simple tokens
@@ -73,6 +74,7 @@ t_SQUOTE = r"'"
 t_LAMBDA = r'\(\\'
 t_MAP_TO = r'->'
 t_ADD_1_AND_SUM = r"add1AndSum"
+
 
 # Boolean method returns True if float
 def isFloat(num):
@@ -130,8 +132,32 @@ def t_INTEGER(t):
 def t_IDENTIFIER(t):
     r'[a-zA-Z_][a-zA-Z0-9_]*'
     if t.value.upper() in reserved:
-       # print "In t_IDENTIFIER, saw: ", t.value
+        print "In t_IDENTIFIER, saw: ", t.value
         t.type = t.value.upper()
+
+    return t
+
+def t_FUNCTION_CALL(t):
+    r'\*[a-zA-Z0-9_]*\([,a-zA-Z0-9_]*\);'
+    if t.value.upper() in reserved:
+        print "In t_IDENTIFIER, saw: ", t.value
+        t.type = t.value.upper()
+    print t.value
+    i = 0
+    counter = 0
+    initLength = 0
+    #get the length of the function name
+    while t.value[i] != '(':
+        counter += 1
+        i += 1
+    initLength = counter
+    counter += 1
+    #get contents of parens
+    while t.value[i] != ')':
+        counter += 1
+        i += 1
+
+    print t.value[initLength:counter]
     return t
 
 def t_CLSTRING(t):
@@ -155,7 +181,6 @@ def t_error(t):
 lex.lex()
 
 # BNF Parsing rules, "Grammar"
-
 def p_program(p):
     '''program : declarations
                | functions
@@ -205,7 +230,7 @@ def p_statement(p):
     '''statement : expression SEMI
                  | assignment SEMI
                  | whileStatement'''
-    print "Saw a statement", p[1]
+    ##print "Saw a statement", p[1]
 
 def p_assignment(p):
     '''assignment : IDENTIFIER EQUALS expression'''
@@ -253,18 +278,20 @@ def p_while(p):
 def p_expression(p):
     '''expression : conjunction
                   | conjunction OR_OP expression'''
-    print p[1]
+    ##print p[1],"YYYYYYYYAYYYYYYYYYYYY"
     p[0] = "Expression: ", p[1]
 
 def p_conjunction(p):
     '''conjunction : equality
                    | AND_OP equality'''
+    ##print p[1],"BOOOOOOOOO"
     if len(p) == 4: p[0] = str(p[1]) + str(p[2]) + str(p[3])
     else : p[0] = str(p[1])
 
 def p_equality(p):
     '''equality : relation
                 | relation equOp equality'''
+    #print p[1],"BOOOOOOOOO"
     if len(p) == 4: p[0] = str(p[1]) + str(p[2]) + str(p[3])
     else : p[0] = str(p[1])
 
@@ -341,6 +368,11 @@ def p_add1AndSum(p):
     '''add1AndSum : ADD_1_AND_SUM LPAREN RPAREN SEMI'''
     add1AndSumEval()
     p[0] = p[1]
+
+def p_functionCall(p):
+    '''functionCall : FUNCTION_CALL SEMI'''
+    print "WE DID ITTTT"
+
 
 def emptyline(self):
     """Do nothing on empty input line"""

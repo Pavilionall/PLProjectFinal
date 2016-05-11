@@ -11,12 +11,13 @@ int main ( ) {
     x = x * 3.5;
     x = x - 1;
     x = x / 2;
+    *test(a,a,d,f);
     while (i < n) {
         i = i + 1;
         f = f * 7.5656;
     }
 
-    add1AndSum();
+
 
 }
 
