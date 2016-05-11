@@ -11,7 +11,9 @@ int main ( ) {
     x = x * 3.5;
     x = x - 1;
     x = x / 2;
-    *squares(1.434,2,3,5,x);
+    *squares(1.434,    2,3,5,x);
+    *squareSum(1,2,3, 4);
+    *varAdd(1);
     while (i < n) {
         i = i + 1;
         f = f * 7.5656;

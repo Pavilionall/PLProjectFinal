@@ -5,10 +5,14 @@
 import ply.lex as lex
 
 # Dictionary to store variable names and values
-variableDict= {}
-#list to store available function names
+global variableDict
+variableDict = {}
+
+#list to store names in function library
 funcList= []
 funcList.append("squares")
+funcList.append("squareSum")
+funcList.append("varAdd")
 
 # Reserved words
 reserved = {
@@ -139,6 +143,25 @@ def squares(items):
     print "The squares of ", items, " are:"
     import Arithmetic
     Arithmetic.squares(temp)
+
+def squareSum(items):
+    sum = 0
+    squareList = [i*i for i in items]
+    for i in squareList:
+        sum += i
+    print sum, "sqaures"
+
+def plusN(item, n):
+    return item + n
+
+
+def varAdd(n):
+    global variableDict
+    print "Current variable dictionary: ", variableDict
+    variableDictUpdate = {k: plusN(v, n[0]) for k, v in variableDict.iteritems()}
+    variableDict.clear()
+    variableDict = variableDictUpdate
+    print "Variable dictionary after varAdd(" + str(n[0]) + "): ", variableDict
 
 def t_INTEGER(t):
     r'\d+'
