@@ -2,9 +2,9 @@
 # HMM tokenizer
 # ------------------------------------------------------------
 
-import ply.lex as lex
+import ply.lex as lex, ply.Vector as Vector
 
-# Dictionary to store variable names and values
+# Global Dictionary to store variable names and their values
 global variableDict
 variableDict = {}
 
@@ -13,6 +13,7 @@ funcList= []
 funcList.append("squares")
 funcList.append("squareSum")
 funcList.append("varAdd")
+funcList.append("vector3D")
 
 # Reserved words
 reserved = {
@@ -90,7 +91,7 @@ def isFloat(num):
     else:
         return True
 
-# Extract variable values from a list of numbers and variables
+# Extract variable values from a list of numbers and variables using variableDict
 def extractVals(list):
     numList = []
     for i in list:
@@ -143,25 +144,58 @@ def squares(items):
     print "The squares of ", items, " are:"
     import Arithmetic
     Arithmetic.squares(temp)
+    print""
 
+#  Sum the squares of a list using List Comprehension
 def squareSum(items):
     sum = 0
     squareList = [i*i for i in items]
     for i in squareList:
         sum += i
-    print sum, "sqaures"
+    print "Sum of ", squareList
+    print sum
+    print ""
 
+#  Add a number to an item
 def plusN(item, n):
     return item + n
 
-
+# Add a constant to all variables in variableDict using dictionary comprehension and a lambda
 def varAdd(n):
     global variableDict
     print "Current variable dictionary: ", variableDict
     variableDictUpdate = {k: plusN(v, n[0]) for k, v in variableDict.iteritems()}
+
+    #Clear out variableDict and replace with the values in variableDictUpdate
     variableDict.clear()
-    variableDict = variableDictUpdate
+    for k in variableDictUpdate:
+        variableDict[k] = variableDictUpdate[k]
     print "Variable dictionary after varAdd(" + str(n[0]) + "): ", variableDict
+    print ""
+
+#  Create a Vector object using Python closures
+def vector3D(items):
+    if not (len(items) == 3):
+        print "ERROR:  Vector must contain 3 components"
+        print ""
+    else:
+        v = Vector.Vector()
+        v.run('$x')(items[0])
+        v.run('$y')(items[1])
+        v.run('$z')(items[2])
+        vecLen = 0
+        vectorList = [v.run('x'), v.run('y'), v.run('z')]
+        for i in vectorList:
+            vecLen += i*i
+        vecLen = vecLen**(0.5)
+        v.run('$length')(vecLen)
+
+        print "Vector created: "
+        print "x: ", v.run('x')
+        print "y: ", v.run('y')
+        print "z: ", v.run('z')
+        print "Vector Length: ", v.run('length')
+        print ""
 
 def t_INTEGER(t):
     r'\d+'
@@ -181,6 +215,7 @@ def t_IDENTIFIER(t):
 
     return t
 
+#  Identify a valid function call and extract its parameters as a list
 def t_FUNCTION_CALL(t):
     r'\*[a-zA-Z0-9_]*\([. ,a-zA-Z0-9_]*\);'
     if t.value.upper() in reserved:
@@ -215,6 +250,8 @@ def t_FUNCTION_CALL(t):
     funcVals = extractVals(funcVals)
     funcCall = str(funcName) + "(" + str(funcVals) + ")"
 
+    # Check validity of function call against current function library
+    # if the function call is valid, execute it with the given parameters
     if funcName in funcList:
         eval(funcCall)
     else:
