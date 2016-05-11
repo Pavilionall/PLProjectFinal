@@ -8,7 +8,7 @@ import ply.lex as lex
 variableDict= {}
 #list to store available function names
 funcList= []
-funcList.append("squareSum")
+funcList.append("squares")
 
 # Reserved words
 reserved = {
@@ -86,6 +86,7 @@ def isFloat(num):
     else:
         return True
 
+# Extract variable values from a list of numbers and variables
 def extractVals(list):
     numList = []
     for i in list:
@@ -129,14 +130,15 @@ def evalStr(string):
         import Arithmetic
         return Arithmetic.div(x, y)
 
-def squareSum(items):
+#Using Java Streams prints out the square of each of the elements in a list
+def squares(items):
     temp = ""
     for i in items:
         temp += str(i)
         temp += ","
     print "The squares of ", items, " are:"
     import Arithmetic
-    Arithmetic.squareSum(temp)
+    Arithmetic.squares(temp)
 
 def t_INTEGER(t):
     r'\d+'

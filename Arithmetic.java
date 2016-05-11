@@ -23,7 +23,7 @@ public class Arithmetic
     public static float div(float i, int j) {return i / j; }
     public static float div(int i, float j) {return i / j; }
 
-    public static void squareSum(String str) {
+    public static void squares(String str) {
 
         ArrayList<String> items = new ArrayList<>();
         String temp = "";
