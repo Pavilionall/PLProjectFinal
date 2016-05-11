@@ -11,7 +11,7 @@ int main ( ) {
     x = x * 3.5;
     x = x - 1;
     x = x / 2;
-    *test(a,a,d,f);
+    *squareSum(1.434,2,3,5,x);
     while (i < n) {
         i = i + 1;
         f = f * 7.5656;

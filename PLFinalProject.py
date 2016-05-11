@@ -6,6 +6,9 @@ import ply.lex as lex
 
 # Dictionary to store variable names and values
 variableDict= {}
+#list to store available function names
+funcList= []
+funcList.append("squareSum")
 
 # Reserved words
 reserved = {
@@ -33,7 +36,7 @@ tokens = [
           'AND_OP', 'OR_OP', 'LPAREN', 'RPAREN', 'LBRACE', 'RBRACE', 'LCURLY', 'RCURLY', \
           'SEMI', 'EQ_OP', 'NE_OP', 'LE_OP', 'GE_OP', 'ELEM', 'PIPE', 'EQUALS', \
           'LT_OP', 'GT_OP', 'PLUS', 'MINUS', 'MULT', 'DIV', 'PRCNT', 'BANG', \
-          'COMMA', 'SQUOTE', 'LAMBDA', 'MAP_TO', 'ADD_1_AND_SUM', \
+          'COMMA', 'SQUOTE', 'LAMBDA', 'MAP_TO', \
           #'DOT', \
           'INTEGER', 'IDENTIFIER', 'CLFLOAT', 'CLSTRING','FUNCTION_CALL' \
           ] + list(reserved.keys())
@@ -73,7 +76,6 @@ t_SQUOTE = r"'"
 #t_DOT    = r'.'
 t_LAMBDA = r'\(\\'
 t_MAP_TO = r'->'
-t_ADD_1_AND_SUM = r"add1AndSum"
 
 
 # Boolean method returns True if float
@@ -84,7 +86,18 @@ def isFloat(num):
     else:
         return True
 
-# qowdpqk
+def extractVals(list):
+    numList = []
+    for i in list:
+        if i in variableDict:
+            numList.append(variableDict[i])
+        elif isFloat(i):
+            numList.append(float(i))
+        else:
+            numList.append(int(i))
+    return numList
+
+#Evaluate the right hand side of an expresion if it has more than one term.
 def evalStr(string):
     x = string[0]
     y = string[2]
@@ -116,8 +129,14 @@ def evalStr(string):
         import Arithmetic
         return Arithmetic.div(x, y)
 
-def add1AndSumEval(items):
-    print "HIIII"
+def squareSum(items):
+    temp = ""
+    for i in items:
+        temp += str(i)
+        temp += ","
+    print "The squares of ", items, " are:"
+    import Arithmetic
+    Arithmetic.squareSum(temp)
 
 def t_INTEGER(t):
     r'\d+'
@@ -138,7 +157,7 @@ def t_IDENTIFIER(t):
     return t
 
 def t_FUNCTION_CALL(t):
-    r'\*[a-zA-Z0-9_]*\([,a-zA-Z0-9_]*\);'
+    r'\*[a-zA-Z0-9_]*\([. ,a-zA-Z0-9_]*\);'
     if t.value.upper() in reserved:
         print "In t_IDENTIFIER, saw: ", t.value
         t.type = t.value.upper()
@@ -151,13 +170,30 @@ def t_FUNCTION_CALL(t):
         counter += 1
         i += 1
     initLength = counter
+    funcName = t.value[1:initLength]
     counter += 1
     #get contents of parens
     while t.value[i] != ')':
         counter += 1
         i += 1
 
-    print t.value[initLength:counter]
+    funcVals = []
+    temp = ""
+    for i in t.value[initLength:counter]:
+        if not (i == "," or i == "(" or i == ")"):
+            temp += i
+        elif not (temp == ""):
+            funcVals.append(temp)
+            temp = ""
+        else:
+            pass
+    funcVals = extractVals(funcVals)
+    funcCall = str(funcName) + "(" + str(funcVals) + ")"
+
+    if funcName in funcList:
+        eval(funcCall)
+    else:
+        print "This is not a valid function"
     return t
 
 def t_CLSTRING(t):
@@ -364,14 +400,9 @@ def p_literal(p):
                | CLSTRING'''
     p[0] = p[1]
 
-def p_add1AndSum(p):
-    '''add1AndSum : ADD_1_AND_SUM LPAREN RPAREN SEMI'''
-    add1AndSumEval()
-    p[0] = p[1]
-
 def p_functionCall(p):
     '''functionCall : FUNCTION_CALL SEMI'''
-    print "WE DID ITTTT"
+    #print "WE DID ITTTT"
 
 
 def emptyline(self):
@@ -381,7 +412,8 @@ def emptyline(self):
 def p_error(p):
     print "At line: ", p.lexer.lineno,
     if p:
-        print("Syntax error at '%s'" % p.value)
+        pass
+        #print("Syntax error at '%s'" % p.value)
     else:
         print("Syntax error at EOF")
 

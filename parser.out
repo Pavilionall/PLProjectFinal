@@ -81,12 +81,10 @@ Rule 59    literal -> TRUE
 Rule 60    literal -> FALSE
 Rule 61    literal -> CLFLOAT
 Rule 62    literal -> CLSTRING
-Rule 63    add1AndSum -> ADD_1_AND_SUM LPAREN RPAREN SEMI
-Rule 64    functionCall -> FUNCTION_CALL SEMI
+Rule 63    functionCall -> FUNCTION_CALL SEMI
 
 Terminals, with rules where they appear
 
-ADD_1_AND_SUM        : 63
 AND_OP               : 32
 BANG                 : 55
 BOOL                 : 17
@@ -101,7 +99,7 @@ EQ_OP                : 35
 FALSE                : 60
 FLOAT                : 16
 FOR                  : 
-FUNCTION_CALL        : 64
+FUNCTION_CALL        : 63
 GE_OP                : 42
 GT_OP                : 41
 IDENTIFIER           : 6 7 8 13 14 27 58
@@ -114,7 +112,7 @@ LBRACE               :
 LCURLY               : 6 7 8 28
 LE_OP                : 40
 LIST                 : 18
-LPAREN               : 6 7 8 28 63
+LPAREN               : 6 7 8 28
 LT_OP                : 39
 MAP_TO               : 
 MINUS                : 46 54
@@ -128,8 +126,8 @@ PRCNT                : 51
 RBRACE               : 
 RCURLY               : 6 7 8 28
 RETURN               : 
-RPAREN               : 6 7 8 28 63
-SEMI                 : 9 10 11 12 24 25 63 64
+RPAREN               : 6 7 8 28
+SEMI                 : 9 10 11 12 24 25 63
 SQUOTE               : 
 STRING               : 21
 TRUE                 : 59
@@ -140,7 +138,6 @@ error                :
 
 Nonterminals, with rules where they appear
 
-add1AndSum           : 
 addOP                : 44
 addition             : 37 38 44
 assignment           : 25
