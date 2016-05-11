@@ -16,6 +16,8 @@ int main ( ) {
         f = f * 7.5656;
     }
 
+    add1AndSum();
+
 }
 
 

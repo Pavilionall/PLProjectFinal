@@ -32,7 +32,7 @@ tokens = [
           'AND_OP', 'OR_OP', 'LPAREN', 'RPAREN', 'LBRACE', 'RBRACE', 'LCURLY', 'RCURLY', \
           'SEMI', 'EQ_OP', 'NE_OP', 'LE_OP', 'GE_OP', 'ELEM', 'PIPE', 'EQUALS', \
           'LT_OP', 'GT_OP', 'PLUS', 'MINUS', 'MULT', 'DIV', 'PRCNT', 'BANG', \
-          'COMMA', 'SQUOTE', 'LAMBDA', 'MAP_TO', \
+          'COMMA', 'SQUOTE', 'LAMBDA', 'MAP_TO', 'ADD_1_AND_SUM', \
           #'DOT', \
           'INTEGER', 'IDENTIFIER', 'CLFLOAT', 'CLSTRING' \
           ] + list(reserved.keys())
@@ -72,6 +72,7 @@ t_SQUOTE = r"'"
 #t_DOT    = r'.'
 t_LAMBDA = r'\(\\'
 t_MAP_TO = r'->'
+t_ADD_1_AND_SUM = r"add1AndSum"
 
 # Boolean method returns True if float
 def isFloat(num):
@@ -113,6 +114,9 @@ def evalStr(string):
         import Arithmetic
         return Arithmetic.div(x, y)
 
+def add1AndSumEval(items):
+    print "HIIII"
+
 def t_INTEGER(t):
     r'\d+'
     try:
@@ -126,7 +130,7 @@ def t_INTEGER(t):
 def t_IDENTIFIER(t):
     r'[a-zA-Z_][a-zA-Z0-9_]*'
     if t.value.upper() in reserved:
-        # print "In t_IDENTIFIER, saw: ", t.value
+       # print "In t_IDENTIFIER, saw: ", t.value
         t.type = t.value.upper()
     return t
 
@@ -288,7 +292,6 @@ def p_addition(p):
     from java.lang import Math
     import Arithmetic
     if len(p) == 4 and isinstance( p[1], int ) and isinstance( p[3], int ):
-        print "Calling java Math: ", Math.max(p[1], p[3])
         print "Calling java Arithmetic.add: ", Arithmetic.add(p[1], p[3])
     if len(p) == 4: p[0] = str(p[1]) + str(p[2]) + str(p[3])
     else : p[0] = p[1]
@@ -332,6 +335,11 @@ def p_literal(p):
                | FALSE
                | CLFLOAT
                | CLSTRING'''
+    p[0] = p[1]
+
+def p_add1AndSum(p):
+    '''add1AndSum : ADD_1_AND_SUM LPAREN RPAREN SEMI'''
+    add1AndSumEval()
     p[0] = p[1]
 
 def emptyline(self):
