@@ -8,7 +8,13 @@ class Vector():
             'z': 0,
             '$z': lambda x: data.update({'z': x}),
             'length': 0,
-            '$length': lambda x: data.update({'length': x})
+            '$length': lambda x: data.update({'length': x}),
+            'unitVectorX': 0,
+            '$unitVectorX': lambda x: data.update({'unitVectorX': x}),
+            'unitVectorY': 0,
+            '$unitVectorY': lambda x: data.update({'unitVectorY': x}),
+            'unitVectorZ': 0,
+            '$unitVectorZ': lambda x: data.update({'unitVectorZ': x})
         }
         def cf(self, d):
             if d in data:

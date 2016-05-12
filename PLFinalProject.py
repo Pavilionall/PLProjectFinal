@@ -199,15 +199,18 @@ def vector3D(items):
         vecLen = vecLen**(0.5)
         v.run('$length')(vecLen)
 
-        print "Vector created: "
+        print "3-D Vector created: "
         print "x: ", v.run('x')
         print "y: ", v.run('y')
         print "z: ", v.run('z')
         print "Vector Length: ", v.run('length')
         print "Unit Vector: "
-        print "x: ", v.run('x')/v.run('length')
-        print "y: ", v.run('y')/v.run('length')
-        print "z: ", v.run('z')/v.run('length'), "\n"
+        v.run('$unitVectorX')(v.run('x')/v.run('length'))
+        v.run('$unitVectorY')(v.run('y')/v.run('length'))
+        v.run('$unitVectorZ')(v.run('z')/v.run('length'))
+        print "x': ", v.run('unitVectorX')
+        print "y': ", v.run('unitVectorY')
+        print "z': ", v.run('unitVectorZ'), "\n"
 
 def t_INTEGER(t):
     r'\d+'
