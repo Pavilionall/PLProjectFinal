@@ -4,6 +4,10 @@
 
 import ply.lex as lex, ply.Vector as Vector
 
+def bienvenido():
+    print "Bienvenido a mini-C!", "\n"
+bienvenido()
+
 # Global Dictionary to store variable names and their values
 global variableDict
 variableDict = {}
@@ -14,6 +18,7 @@ funcList.append("squares")
 funcList.append("squareSum")
 funcList.append("varAdd")
 funcList.append("vector3D")
+funcList.append("printVars")
 
 # Reserved words
 reserved = {
@@ -91,6 +96,9 @@ def isFloat(num):
     else:
         return True
 
+def printVars(arg):
+    print "Variable Dictionary: ", variableDict, "\n"
+
 # Extract variable values from a list of numbers and variables using variableDict
 def extractVals(list):
     numList = []
@@ -141,20 +149,22 @@ def squares(items):
     for i in items:
         temp += str(i)
         temp += ","
-    print "The squares of ", items, " are:"
+    print "The squares of " + str(tuple(items)) + " are:"
     import Arithmetic
     Arithmetic.squares(temp)
     print""
 
 #  Sum the squares of a list using List Comprehension
 def squareSum(items):
-    sum = 0
+    numsTuple = str(tuple(items))
+
+    sum = reduce(lambda x,y: x*x + y*y if (x==items[0]) else x + y*y, items)
     squareList = [i*i for i in items]
-    for i in squareList:
-        sum += i
-    print "Sum of ", squareList
-    print sum
-    print ""
+
+    squareTuple = str(tuple(squareList))
+
+    print "Squaring " + numsTuple + ": " + squareTuple
+    print "Sum of " + squareTuple + ": " + str(sum) + "\n"
 
 #  Add a number to an item
 def plusN(item, n):
@@ -170,14 +180,12 @@ def varAdd(n):
     variableDict.clear()
     for k in variableDictUpdate:
         variableDict[k] = variableDictUpdate[k]
-    print "Variable dictionary after varAdd(" + str(n[0]) + "): ", variableDict
-    print ""
+    print "Variable dictionary after varAdd(" + str(n[0]) + "): ", variableDict, "\n"
 
 #  Create a Vector object using Python closures
 def vector3D(items):
     if not (len(items) == 3):
-        print "ERROR:  Vector must contain 3 components"
-        print ""
+        print "ERROR:  Vector must contain 3 components", "\n"
     else:
         v = Vector.Vector()
         v.run('$x')(items[0])
@@ -185,8 +193,9 @@ def vector3D(items):
         v.run('$z')(items[2])
         vecLen = 0
         vectorList = [v.run('x'), v.run('y'), v.run('z')]
+        f = lambda x: x*x
         for i in vectorList:
-            vecLen += i*i
+            vecLen += f(i)
         vecLen = vecLen**(0.5)
         v.run('$length')(vecLen)
 
@@ -195,7 +204,10 @@ def vector3D(items):
         print "y: ", v.run('y')
         print "z: ", v.run('z')
         print "Vector Length: ", v.run('length')
-        print ""
+        print "Unit Vector: "
+        print "x: ", v.run('x')/v.run('length')
+        print "y: ", v.run('y')/v.run('length')
+        print "z: ", v.run('z')/v.run('length'), "\n"
 
 def t_INTEGER(t):
     r'\d+'
@@ -210,7 +222,7 @@ def t_INTEGER(t):
 def t_IDENTIFIER(t):
     r'[a-zA-Z_][a-zA-Z0-9_]*'
     if t.value.upper() in reserved:
-        print "In t_IDENTIFIER, saw: ", t.value
+        #print "In t_IDENTIFIER, saw: ", t.value
         t.type = t.value.upper()
 
     return t
@@ -219,9 +231,9 @@ def t_IDENTIFIER(t):
 def t_FUNCTION_CALL(t):
     r'\*[a-zA-Z0-9_]*\([. ,a-zA-Z0-9_]*\);'
     if t.value.upper() in reserved:
-        print "In t_IDENTIFIER, saw: ", t.value
+        #print "In t_IDENTIFIER, saw: ", t.value
         t.type = t.value.upper()
-    print t.value
+    #print t.value
     i = 0
     counter = 0
     initLength = 0
@@ -303,7 +315,7 @@ def p_declarations(p):
     elif len(p) == 5 : p[0] = p[3]
     elif len(p) == 6 : p[0] = p[2] + " = " + p[4]
     elif len(p) == 7 : p[0] = p[3] + " = " + p[5]
-    print p[0]
+    #print p[0]
 
 def p_idList(p):
     '''idList : IDENTIFIER
@@ -417,7 +429,8 @@ def p_addition(p):
     from java.lang import Math
     import Arithmetic
     if len(p) == 4 and isinstance( p[1], int ) and isinstance( p[3], int ):
-        print "Calling java Arithmetic.add: ", Arithmetic.add(p[1], p[3])
+        pass
+        #print "Calling java Arithmetic.add: ", Arithmetic.add(p[1], p[3])
     if len(p) == 4: p[0] = str(p[1]) + str(p[2]) + str(p[3])
     else : p[0] = p[1]
 
@@ -464,18 +477,14 @@ def p_literal(p):
 
 def p_functionCall(p):
     '''functionCall : FUNCTION_CALL SEMI'''
-    #print "WE DID ITTTT"
-
 
 def emptyline(self):
     """Do nothing on empty input line"""
     pass# Error handling rule
 
 def p_error(p):
-    print "At line: ", p.lexer.lineno,
     if p:
         pass
-        #print("Syntax error at '%s'" % p.value)
     else:
         print("Syntax error at EOF")
 
@@ -485,5 +494,3 @@ yacc.yacc()
 with open('testfile.c', 'r') as content_file:
     content = content_file.read()
 yacc.parse(content)
-
-print variableDict
