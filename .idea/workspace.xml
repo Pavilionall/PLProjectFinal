@@ -1,10 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="3b1318d3-1c61-4132-a099-66607b6f4cb2" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/PLFinalProject.py" afterPath="$PROJECT_DIR$/PLFinalProject.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/testfile.c" afterPath="$PROJECT_DIR$/testfile.c" />
-    </list>
+    <list default="true" id="3b1318d3-1c61-4132-a099-66607b6f4cb2" name="Default" comment="" />
     <ignored path="HMM PLY Version.iws" />
     <ignored path=".idea/workspace.xml" />
     <ignored path="$PROJECT_DIR$/out/" />
@@ -34,8 +31,8 @@
       <file leaf-file-name="PLFinalProject.py" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/PLFinalProject.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.2958435">
-              <caret line="230" column="20" selection-start-line="230" selection-start-column="4" selection-end-line="230" selection-end-column="22" />
+            <state vertical-scroll-proportion="-1.8190709">
+              <caret line="350" column="22" selection-start-line="350" selection-start-column="22" selection-end-line="350" selection-end-column="22" />
               <folding />
             </state>
           </provider>
@@ -879,12 +876,12 @@
       <workItem from="1462927501904" duration="36000" />
       <workItem from="1462927838167" duration="4408000" />
       <workItem from="1462939843920" duration="5158000" />
-      <workItem from="1462978924802" duration="21168000" />
+      <workItem from="1462978924802" duration="22347000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="49451000" />
+    <option name="totallyTimeSpent" value="50630000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-9" y="-9" width="1938" height="1048" extended-state="6" />
@@ -1210,10 +1207,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/parsetab.py">
+    <entry file="file://$PROJECT_DIR$/ply/Vector.py">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
-          <caret line="12" column="39" selection-start-line="12" selection-start-column="39" selection-end-line="12" selection-end-column="39" />
+          <caret line="4" column="12" selection-start-line="4" selection-start-column="12" selection-end-line="4" selection-end-column="12" />
           <folding />
         </state>
       </provider>
@@ -1226,18 +1223,18 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/ply/Vector.py">
+    <entry file="file://$PROJECT_DIR$/parsetab.py">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
-          <caret line="4" column="12" selection-start-line="4" selection-start-column="12" selection-end-line="4" selection-end-column="12" />
+          <caret line="12" column="39" selection-start-line="12" selection-start-column="39" selection-end-line="12" selection-end-column="39" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/PLFinalProject.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.2958435">
-          <caret line="230" column="20" selection-start-line="230" selection-start-column="4" selection-end-line="230" selection-end-column="22" />
+        <state vertical-scroll-proportion="-1.8190709">
+          <caret line="350" column="22" selection-start-line="350" selection-start-column="22" selection-end-line="350" selection-end-column="22" />
           <folding />
         </state>
       </provider>
